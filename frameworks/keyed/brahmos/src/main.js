@@ -1,5 +1,4 @@
-var React = require('react');
-var ReactDOM = require('react-dom');
+var Brahmos = require('brahmos');
 
 function random(max) {
   return Math.round(Math.random() * 1000) % max;
@@ -46,7 +45,7 @@ var stopMeasure = function() {
 
 const GlyphIcon = <span className="glyphicon glyphicon-remove" aria-hidden="true"></span>;
 
-class Row extends React.Component {
+class Row extends Brahmos.Component {
   onSelect = () => {
     this.props.select(this.props.item);
   }
@@ -64,7 +63,7 @@ class Row extends React.Component {
     return (<tr className={selected ? "danger" : ""}>
       <td className="col-md-1">{item.id}</td>
       <td className="col-md-4"><a onClick={this.onSelect}>{item.label}</a></td>
-      <td className="col-md-1"><a onClick={this.onRemove}>{GlyphIcon}</a></td>
+      <td className="col-md-1"><a onClick={this.onRemove}><span className="glyphicon glyphicon-remove" aria-hidden="true"></span></a></td>
       <td className="col-md-6"></td>
     </tr>);
   }
@@ -78,7 +77,7 @@ function Button({ id, cb, title }) {
   );
 }
 
-class Jumbotron extends React.Component {
+class Jumbotron extends Brahmos.Component {
   shouldComponentUpdate() {
     return false;
   }
@@ -89,7 +88,7 @@ class Jumbotron extends React.Component {
       <div className="jumbotron">
         <div className="row">
           <div className="col-md-6">
-            <h1>React keyed</h1>
+            <h1>Brahmos keyed</h1>
           </div>
           <div className="col-md-6">
             <div className="row">
@@ -107,16 +106,11 @@ class Jumbotron extends React.Component {
   }
 }
 
-class Main extends React.Component {
+class Main extends Brahmos.Component {
   state = {
     data: [],
     selected: 0,
   };
-
-  constructor() {
-    super();
-    startMeasure("render");
-  }
 
   componentDidUpdate() {
     stopMeasure();
@@ -132,7 +126,6 @@ class Main extends React.Component {
   }
 
   runLots = () => {
-    startMeasure("runLots");
     this.setState({ data: buildData(10000), selected: 0 });
   }
 
@@ -147,8 +140,9 @@ class Main extends React.Component {
       const item = data[i];
       data[i] = { id: item.id, label: item.label + ' !!!' };
     }
-    // this.perf = performance.now();
+    //this.perf = performance.now();
     this.forceUpdate();
+    // console.log('-', performance.now() - this.perf);
   }
 
   select = (item) => {
@@ -188,7 +182,7 @@ class Main extends React.Component {
   }
 }
 
-ReactDOM.render(
+Brahmos.render(
   <Main />,
   document.getElementById('main'),
 );
